@@ -13,6 +13,11 @@ target/
 .che/
 .gen/
 
+#UI
+dist/
+resources/
+app/*/package-lock.json
+
 # MTA
 *_mta_build_tmp
 *.mtar
