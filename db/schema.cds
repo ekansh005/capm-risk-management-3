@@ -1,6 +1,7 @@
 namespace sap.ui.riskmanagement;
 
 using {managed} from '@sap/cds/common';
+using {API_BUSINESS_PARTNER as bupa} from '../srv/external/API_BUSINESS_PARTNER';
 
 entity Risks : managed {
     key ID          : UUID @(Core.Computed: true);
@@ -19,4 +20,10 @@ entity Mitigations : managed {
         timeline    : String;
         risks       : Association to many Risks
                           on risks.miti = $self;
+}
+
+entity Suppliers as projection on bupa.A_BusinessPartner {
+    key BusinessPartner          as ID,
+        BusinessPartnerFullName  as fullName,
+        BusinessPartnerIsBlocked as isBlocked,
 }
