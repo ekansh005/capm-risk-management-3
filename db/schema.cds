@@ -11,6 +11,7 @@ entity Risks : managed {
         miti        : Association to Mitigations;
         impact      : Integer;
         criticality : Integer;
+        supplier    : Association to Suppliers;
 }
 
 entity Mitigations : managed {

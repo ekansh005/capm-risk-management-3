@@ -1,11 +1,31 @@
 using {RiskService} from './risk-service';
 
 annotate RiskService.Risks with {
-    title  @title: 'Title';
-    prio   @title: 'Priority';
-    descr  @title: 'Description';
-    miti   @title: 'Mitigations';
-    impact @title: 'Impact';
+    title    @title: 'Title';
+    prio     @title: 'Priority';
+    descr    @title: 'Description';
+    miti     @title: 'Mitigations';
+    impact   @title: 'Impact';
+    supplier @(
+        title                 : 'Supplier',
+        Common.Text           : supplier.fullName,
+        Common.TextArrangement: #TextOnly,
+        Common.ValueList      : {
+            Label         : 'Suppliers',
+            CollectionPath: 'Suppliers',
+            Parameters    : [
+                {
+                    $Type            : 'Common.ValueListParameterInOut',
+                    LocalDataProperty: supplier_ID,
+                    ValueListProperty: 'ID'
+                },
+                {
+                    $Type            : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty: 'fullName',
+                }
+            ],
+        }
+    )
 };
 
 annotate RiskService.Mitigations with {
@@ -64,7 +84,9 @@ annotate RiskService.Risks with @(UI: {
             {
                 Value      : impact,
                 Criticality: criticality
-            }
+            },
+            {Value: supplier_ID},
+            {Value: supplier.isBlocked, }
         ],
     },
 }) {}
@@ -91,3 +113,14 @@ annotate RiskService.Risks with {
         },
     })
 };
+
+annotate RiskService.Suppliers with {
+    ID        @(
+        title      : 'ID',
+        Common.Text: fullName
+    );
+    fullName  @title: 'Name';
+    isBlocked @title: 'Supplier Blocked';
+};
+
+annotate RiskService.Suppliers with @Capabilities.SearchRestrictions.Searchable: false;
